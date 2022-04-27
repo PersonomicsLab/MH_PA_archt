@@ -8,9 +8,7 @@ addpath('~/Scripts/matlab/PermCCA-master')
 
 % id cluster version eg chpc2.0 vs chpc3.0
 wkdir = '/scratch/weiz/projects/ukb_phyama';
-% if ~exist(wkdir, 'dir')
-%   wkdir = '/scratch/wzzang/projects/ukb_phyama';
-% end
+
 
 % whether first or second run
 % firstrun = 1: initial run to identify sig cc
@@ -45,7 +43,7 @@ end
 
 % set up model for mh and phy
 outs = cell(4,1);
-nK = [2 3 2 2]; % sig nCV in each model
+nK = [2 3 2 2]; % sig nCV in each model after run0
 
 % if firstrun
 %   nk = [];
@@ -122,42 +120,7 @@ if firstrun
     writematrix(tmp, fullfile(wkdir,'stats',mddir, otname))
   end
 end
-% test col-wise corr between two output matrices
-% % with or without normalizing input data
-% ncols = size(A1,2);
-% for c = 1:ncols
-%   dt1 = A1(:,c);
-%   dt2 = A2(:,c);
-%   [r,p] = corrcoef(dt1,dt2);
-%   disp(['CV ', num2str(c), ' corr=', num2str(r(1,2)), '; p=', num2str(p(1,2))])
-% end
 
-% run fdr for loadings
-% nmd = length(outs);
-% nCV = [2 2 2 1];
-% loadouts = cell(nmd,1);
-% adjPs = zeros(1, max(nCV)+2) ;
-% for m = 1:nmd
-%   ids = 1:nCV(m);
-%   % extract all p for A loadings
-%   Ps = outs{m}.loadAp(:,ids);
-%   % vectorize columns
-%   Pvecs = Ps(:);
-%   [loadouts{m}.pthr,loadouts{m}.pcor,loadouts{m}.padj] = fdr(Pvecs);
-%   % reshape adjusted p into x by nCV
-%   Ps = reshape(loadouts{m}.padj, [], nCV(m));
-%   if length(ids)<max(nCV)
-%     Ps = horzcat(Ps, repmat(0,size(Ps,1),(max(nCV)-length(ids))));
-%   end
-%   % adding brain var ind & model number
-%   Ps = horzcat((1:(size(Ps,1)))', Ps, repmat(m,size(Ps,1),1));
-%   % concatenating data
-%   adjPs = vertcat(adjPs, Ps);
-%
-% end
-% adjPs(1,:) = [];
-% otname = strcat('loadings_adjPs.csv');
-% writematrix(adjPs, fullfile(wkdir,'stats',otname))
 
 % extract loadings per model
 if ~firstrun
