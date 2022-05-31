@@ -144,3 +144,6 @@ OTHER
 
  ## R Script
  LCV.R
+
+ ## Shell Script
+ LCV.sh
